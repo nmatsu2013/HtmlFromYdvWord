@@ -48,14 +48,12 @@ func (d *GoogleDocument) GetHTML() (string, error) {
 func main() {
 	docId := "1234567890"
 
-	// クレデンシャル取得
 	credentials, err := getCredentials()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	// GoogleドキュメントAPIクライアントを作成
 	client, err := docs.NewService(context.Background(), option.WithCredentials(credentials))
 	if err != nil {
 		fmt.Println(err)
@@ -68,7 +66,6 @@ func main() {
 		return
 	}
 
-	// HTMLを出力します。
 	fmt.Println(html)
 }
 
@@ -78,8 +75,6 @@ func getCredentials() (*google.Credentials, error) {
 		return nil, err
 	}
 	defer f.Close()
-
-	// io.Readerから読み込んだjsonを[]byteに変換
 	bytes, err := io.ReadAll(f)
 	if err != nil {
 		fmt.Println(err)
