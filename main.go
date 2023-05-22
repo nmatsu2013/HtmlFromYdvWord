@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"html"
 	"io"
-	"os"
 
-	"golang.org/x/oauth2/google"
 	"google.golang.org/api/docs/v1"
 	"google.golang.org/api/option"
 )
@@ -46,17 +44,10 @@ func (d *GoogleDocument) GetHTML() (string, error) {
 }
 
 func main() {
-	docId := "1234567890"
-
-	// クレデンシャル取得
-	credentials, err := getCredentials()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	docId := "12345"
 
 	// GoogleドキュメントAPIクライアントを作成
-	client, err := docs.NewService(context.Background(), option.WithCredentials(credentials))
+	client, err := docs.NewService(context.Background(), option.WithCredentialsFile("credential.json"))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -64,33 +55,9 @@ func main() {
 
 	html, err := NewGoogleDocument(client, docId).GetHTML()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		return
 	}
 
-	// HTMLを出力します。
 	fmt.Println(html)
-}
-
-func getCredentials() (*google.Credentials, error) {
-	f, err := os.Open("credentials.json")
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	// io.Readerから読み込んだjsonを[]byteに変換
-	bytes, err := io.ReadAll(f)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	credentials, err := google.CredentialsFromJSON(context.Background(), bytes)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	return credentials, nil
 }
