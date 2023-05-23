@@ -1,4 +1,5 @@
 # HtmlFromYdvWord
+- 本プロジェクトではGoogleドキュメントをHTMLにして返却する事を試した
 
 ## 説明
 - Googleドライブに置かれたドキュメントをHTML形式で返却
